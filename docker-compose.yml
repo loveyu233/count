@@ -1,0 +1,34 @@
+version: "1"
+
+networks:
+  serviceNet:
+    driver: bridge
+
+services:
+  count:
+    container_name: count
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: count:v1
+    restart: always
+    networks:
+      - serviceNet
+    ports:
+      - "9999:9999"
+    command: /app/count_app
+
+  pgsql:
+    image: "postgres:12"
+    container_name: "pgsqlcount"
+    environment:
+      POSTGRES_USER: pgsql
+      POSTGRES_PASSWORD: pgsql
+      POSTGRES_DB: pgsql
+    networks:
+      - serviceNet
+    ports:
+      - "5432:5432"
+
+
+
